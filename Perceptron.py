@@ -8,9 +8,10 @@ def step(x):
     
 class Perceptron:
     def __init__(self, n_entrada):
-        self.pesos = [n_entrada + 1] # array para armazenar os pesos, incluindo o bias
-        for i in range(n_entrada + 1):
-            self.pesos[i] = np.random.random_sample() # inicializando pesos com numeros aleatorios de 0 a 1
+        #self.pesos = [n_entrada + 1] # array para armazenar os pesos, incluindo o bias
+        #for i in range(n_entrada):
+        #    self.pesos[i] = np.random.random_sample() # inicializando pesos com numeros aleatorios de 0 a 1
+        self.pesos = np.random.random_sample(n_entrada + 1)
 
     def aplicacao(self, x): # x e array de entrada
         Yin = np.dot(x,self.pesos[1:]) + self.pesos[0] # soma ponderada dos pesos + bias
@@ -25,3 +26,26 @@ class Perceptron:
                 #ajustes de pesos:
                 self.pesos[0] += erro*taxa_aprendizado  #bias
                 self.pesos[1:] += erro*taxa_aprendizado*X[i]
+
+# Criacao do modelo
+modelo = Perceptron(n_entrada = 2)
+
+# Dados de entrada para treinamento
+X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+y = np.array([0, 0, 0, 1])
+
+# Chamando algoritmo de treinamento
+modelo.treinamento(X, y, n_epocas = 15, taxa_aprendizado = 0.1)
+
+# Chamada da execucao do algoritmo treinado
+print(modelo.aplicacao([0,0]))
+print(modelo.aplicacao([0,1]))
+print(modelo.aplicacao([1,0]))
+print(modelo.aplicacao([1,1]))
+
+# Teste em escala
+for i in range(30):
+    if(modelo.aplicacao([0,0]) != 0): print("!")
+    if(modelo.aplicacao([0,1]) != 0): print("!")
+    if(modelo.aplicacao([1,0]) != 0): print("!")
+    if(modelo.aplicacao([1,1]) != 1): print("!")

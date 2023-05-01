@@ -6,7 +6,7 @@ modelo = N_Perceptron.Perceptron(n_entrada = 2)
 
 # Dados de entrada para treinamento
 X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-y = np.array([0, 0, 0, 1])
+y = np.array([0, 1, 1, 1])
 
 # Chamando algoritmo de treinamento
 modelo.treinamento(X, y, n_epocas = 15, taxa_aprendizado = 0.1)

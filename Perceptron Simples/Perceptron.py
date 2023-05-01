@@ -26,6 +26,7 @@ class Perceptron:
                 #ajustes de pesos:
                 self.pesos[0] += erro*taxa_aprendizado  #bias
                 self.pesos[1:] += erro*taxa_aprendizado*X[i]
+                
 ###################
 # PROBLEMA DO AND #
 ###################

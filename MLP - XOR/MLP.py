@@ -6,6 +6,7 @@ class MLP:
         self.bias1 = np.zeros(nn_escondida) #vetor de pesos bias pra cada neuronio da camada escondida
         self.pesos2 = np.random.randn(nn_escondida, nn_saida) # matris de pesos - cada neuronio da camada escondida vai para cada um na camada de saida
         self.bias2 = np.zeros(nn_saida)
+        self.nc_escondidas = nn_escondida
     
     def sigmoide(self, x): # funcao de ativacao - retorna valor de (0,1) e tem derivada em todos os pontos
         return 1/(1+np.exp(-x))
@@ -21,18 +22,45 @@ class MLP:
         return YS
     
     def aplicacao(self, x): #arredondadmento para resultado
-        round(self.feedfoard(x))
+        return(np.round(self.feedfoard(x)))
 
     def treinamento(self, X, y, n_epocas, taxa_aprendizado):
         for epoca in range(n_epocas): #passar n_epocas vezes pelo conjunto de dados de teste
             for i in range(X.shape[0]): #para cada vetor de nn_entrada passado
-                saida = self.feedfoard(X[i])
+                # Feedfoward
+                saida_intermediaria = self.sigmoide(np.dot(X[i], self.pesos1) + self.bias1)
+                saida = self.sigmoide(np.dot(saida_intermediaria, self.pesos2) + self.bias2)
+
                 # Backpropagation
-                for j in range(self.nn_saida):
-                    #para cada neuronio da camada de saida
-                    erro_saida = np.abs(saida[j] - y[j])
-                    delta_saida = erro_saida + self.derivada_sigmoide(saida)
+                erro_saida = y - saida
+                erro_saida = erro_saida[:2]
+                delta_saida = erro_saida*self.derivada_sigmoide(saida)
 
-                    #ajuste de pesos
-                    self.pesos2[][] += taxa_aprendizado * 
+                erro_intermediaria = np.zeros(self.nc_escondidas)
+                for i in range(len(saida)):
+                    for j in range(self.nc_escondidas):
+                        erro_intermediaria[j] += erro_saida[i]*self.pesos2.T[i][j]
+                delta_intermediaria = erro_intermediaria*self.derivada_sigmoide(saida_intermediaria)
 
+                #ajuste de pesos
+                self.pesos2 += taxa_aprendizado*saida_intermediaria.T.dot(delta_saida)
+                self.bias2 += taxa_aprendizado*saida_intermediaria.T.dot(delta_saida)
+                self.pesos1 += taxa_aprendizado*X[i].T.dot(delta_intermediaria)
+                self.bias1 += taxa_aprendizado*X[i].T.dot(delta_intermediaria)
+                        
+
+# Criacao do modelo
+modelo = MLP(nn_entrada = 2, nn_saida = 1,nn_escondida = 2)
+
+# Dados de entrada para treinamento
+X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+y = np.array([0, 1, 1, 0])
+
+# Chamando algoritmo de treinamento
+modelo.treinamento(X, y, n_epocas = 1000, taxa_aprendizado = 0.1)
+
+# Chamada da execucao do algoritmo treinado
+print(modelo.aplicacao([0,0]))
+print(modelo.aplicacao([0,1]))
+print(modelo.aplicacao([1,0]))
+print(modelo.aplicacao([1,1]))

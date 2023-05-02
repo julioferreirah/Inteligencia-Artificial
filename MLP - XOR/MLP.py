@@ -1,6 +1,6 @@
 import numpy as np
 
-class MLP:
+class MultilayerPerceptron:
     def __init__(self, nn_entrada, nn_saida,nn_escondida):
         self.pesos1 = np.random.randn(nn_entrada, nn_escondida) # matris de pesos - cada neuronio de entrada vai para cada um na camada escondida
         self.bias1 = np.zeros(nn_escondida) #vetor de pesos bias pra cada neuronio da camada escondida
@@ -48,19 +48,3 @@ class MLP:
                 self.pesos1 += taxa_aprendizado*X[i].T.dot(delta_intermediaria)
                 self.bias1 += taxa_aprendizado*X[i].T.dot(delta_intermediaria)
                         
-
-# Criacao do modelo
-modelo = MLP(nn_entrada = 2, nn_saida = 1,nn_escondida = 2)
-
-# Dados de entrada para treinamento
-X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-y = np.array([0, 1, 1, 0])
-
-# Chamando algoritmo de treinamento
-modelo.treinamento(X, y, n_epocas = 1000, taxa_aprendizado = 0.1)
-
-# Chamada da execucao do algoritmo treinado
-print(modelo.aplicacao([0,0]))
-print(modelo.aplicacao([0,1]))
-print(modelo.aplicacao([1,0]))
-print(modelo.aplicacao([1,1]))

@@ -14,15 +14,12 @@ class MultilayerPerceptron:
     def derivada_sigmoide(self, x): # precisa da derivada para saber a direcao do erro e fazer a correcao dos pesos no treinamento
         return x*(1-x)
     
-    def feedfoard(self, x): #recebe um vetor de tamanho = nn_entrada 
+    def rodar(self, x): #recebe um vetor de tamanho = nn_entrada 
         YinE = np.dot(x, self.pesos1) + self.bias1 # soma ponderada primeira camanda
-        YE = self.sigmoide(YinE) # saida camada escondida
-        YinS = np.dot(YE, self.pesos2) + self.bias2 # soma ponderada primeira camanda
-        YS = self.sigmoide(YinS) #saida camada de saida (tamanho passado na inicializacao)
-        return YS
-    
-    def aplicacao(self, x): #arredondadmento para resultado
-        return(np.round(self.feedfoard(x)))
+        saida_intermediaria = self.sigmoide(YinE) # saida camada escondida
+        YinS = np.dot(saida_intermediaria, self.pesos2) + self.bias2 # soma ponderada primeira camanda
+        saida = self.sigmoide(YinS) #saida camada de saida (tamanho passado na inicializacao)
+        return saida
 
     def treinamento(self, X, y, n_epocas, taxa_aprendizado):
         for epoca in range(n_epocas): #passar n_epocas vezes pelo conjunto de dados de teste

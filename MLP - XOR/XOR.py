@@ -12,7 +12,7 @@ y = np.array([0, 1, 1, 0])
 modelo.treinamento(X, y, n_epocas = 100, taxa_aprendizado = 0.1)
 
 # Chamada da execucao do algoritmo treinado
-print(modelo.aplicacao([0,0]))
-print(modelo.aplicacao([0,1]))
-print(modelo.aplicacao([1,0]))
-print(modelo.aplicacao([1,1]))
+print(modelo.rodar([0,0]))
+print(modelo.rodar([0,1]))
+print(modelo.rodar([1,0]))
+print(modelo.rodar([1,1]))

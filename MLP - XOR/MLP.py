@@ -41,7 +41,7 @@ class MultilayerPerceptron:
 
                 #ajuste de pesos
                 self.pesos2 += taxa_aprendizado*saida_intermediaria.T.dot(delta_saida)
-                self.bias2 += taxa_aprendizado*saida_intermediaria.T.dot(delta_saida)
+                self.bias2 += taxa_aprendizado*np.sum(delta_saida, axis=0)
                 self.pesos1 += taxa_aprendizado*X[i].T.dot(delta_intermediaria)
-                self.bias1 += taxa_aprendizado*X[i].T.dot(delta_intermediaria)
+                self.bias1 += taxa_aprendizado*np.sum(delta_intermediaria, axis=0)
                         

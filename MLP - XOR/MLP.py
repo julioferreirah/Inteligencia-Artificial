@@ -1,4 +1,5 @@
 import numpy as np
+import time as t
 
 class MultilayerPerceptron:
     def __init__(self, nn_entrada, nn_saida,nn_escondida):
@@ -22,6 +23,7 @@ class MultilayerPerceptron:
         return saida
 
     def treinamento(self, X, y, n_epocas, taxa_aprendizado):
+        t0 = t.time()
         for epoca in range(n_epocas):
             for i in range(X.shape[0]):
                 # Feedforward
@@ -40,4 +42,6 @@ class MultilayerPerceptron:
                 self.bias2 += taxa_aprendizado*delta_saida
                 self.pesos1 += taxa_aprendizado*np.dot(X[i][:,np.newaxis], delta_intermediaria[np.newaxis,:])
                 self.bias1 += taxa_aprendizado*delta_intermediaria
+        tf = t.time()
+        return tf-t0
                         

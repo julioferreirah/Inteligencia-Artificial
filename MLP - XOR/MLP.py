@@ -22,27 +22,22 @@ class MultilayerPerceptron:
         return saida
 
     def treinamento(self, X, y, n_epocas, taxa_aprendizado):
-        for epoca in range(n_epocas): #passar n_epocas vezes pelo conjunto de dados de teste
-            for i in range(X.shape[0]): #para cada vetor de nn_entrada passado
-                # Feedfoward
+        for epoca in range(n_epocas):
+            for i in range(X.shape[0]):
+                # Feedforward
                 saida_intermediaria = self.sigmoide(np.dot(X[i], self.pesos1) + self.bias1)
                 saida = self.sigmoide(np.dot(saida_intermediaria, self.pesos2) + self.bias2)
 
                 # Backpropagation
-                erro_saida = y - saida
-                erro_saida = erro_saida[:2]
+                erro_saida = y[i] - saida
                 delta_saida = erro_saida*self.derivada_sigmoide(saida)
 
-                erro_intermediaria = np.zeros(self.nc_escondidas)
-                for i in range(len(saida)):
-                    for j in range(self.nc_escondidas):
-                        erro_intermediaria[j] += erro_saida[i]*self.pesos2.T[i][j]
+                erro_intermediaria = np.dot(delta_saida, self.pesos2.T)
                 delta_intermediaria = erro_intermediaria*self.derivada_sigmoide(saida_intermediaria)
 
-
-                #ajuste de pesos
-                self.pesos2 += taxa_aprendizado*saida_intermediaria.T.dot(delta_saida)
-                self.bias2 += taxa_aprendizado*np.sum(delta_saida, axis=0)
-                self.pesos1 += taxa_aprendizado*X[i].T.dot(delta_intermediaria)
-                self.bias1 += taxa_aprendizado*np.sum(delta_intermediaria, axis=0)
+                # Ajuste de pesos
+                self.pesos2 += taxa_aprendizado*np.dot(saida_intermediaria[:,np.newaxis], delta_saida[np.newaxis,:])
+                self.bias2 += taxa_aprendizado*delta_saida
+                self.pesos1 += taxa_aprendizado*np.dot(X[i][:,np.newaxis], delta_intermediaria[np.newaxis,:])
+                self.bias1 += taxa_aprendizado*delta_intermediaria
                         

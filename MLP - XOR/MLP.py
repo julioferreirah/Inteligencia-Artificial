@@ -39,6 +39,7 @@ class MultilayerPerceptron:
                         erro_intermediaria[j] += erro_saida[i]*self.pesos2.T[i][j]
                 delta_intermediaria = erro_intermediaria*self.derivada_sigmoide(saida_intermediaria)
 
+
                 #ajuste de pesos
                 self.pesos2 += taxa_aprendizado*saida_intermediaria.T.dot(delta_saida)
                 self.bias2 += taxa_aprendizado*np.sum(delta_saida, axis=0)
